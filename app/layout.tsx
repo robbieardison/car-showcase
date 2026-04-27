@@ -3,8 +3,8 @@ import './globals.css'
 
 
 export const metadata = {
-  title: 'Car Hub',
-  description: 'Temukan mobil paling bagus di seluruh dunia',
+  title: 'Car Showcase',
+  description: 'Temukan mobil terbaik untuk dibeli dengan mudah',
 }
 
 export default function RootLayout({

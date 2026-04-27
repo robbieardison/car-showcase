@@ -16,13 +16,16 @@ const Navbar = () => {
           >
           </Image>
         </Link>
-        <CustomButton
-        title="Sign In"
-        btnType="button"
-        containerStyles="text-primary-blue-rounded-full bg-white min-w-[130px]"
-        >
-
-        </CustomButton>
+        <div className="flex items-center gap-3">
+          <Link href="/wishlist" className="text-sm font-semibold text-primary-blue">
+            Wishlist
+          </Link>
+          <CustomButton
+            title="Hubungi Sales"
+            btnType="button"
+            containerStyles="text-primary-blue rounded-full bg-white min-w-[130px]"
+          />
+        </div>
       </nav>
     </header>
   )
