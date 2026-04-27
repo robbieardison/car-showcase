@@ -35,15 +35,14 @@ export default function WishlistPage() {
   );
 
   const toggleWishlist = (carId: string) => {
-    setWishlistedCarIds((prev) => {
-      const next = new Set(prev);
-      if (next.has(carId)) {
-        next.delete(carId);
-      } else {
-        next.add(carId);
-      }
-      return next;
-    });
+    const next = new Set(wishlistedCarIds);
+    if (next.has(carId)) {
+      next.delete(carId);
+    } else {
+      next.add(carId);
+    }
+    setWishlistedCarIds(next);
+    window.localStorage.setItem("wishlistCarIds", JSON.stringify(Array.from(next)));
   };
 
   return (

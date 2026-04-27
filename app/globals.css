@@ -88,7 +88,7 @@
 
 /* START: Car Card styles */
 .car-card {
-  @apply flex flex-col p-6 justify-center items-start text-black-100 bg-primary-blue-100 hover:bg-white hover:shadow-md rounded-3xl;
+  @apply flex flex-col p-4 justify-center items-start text-black-100 bg-white border border-slate-100 shadow-sm hover:shadow-lg rounded-2xl transition-all duration-200;
 }
 
 .car-card__content {
@@ -100,7 +100,7 @@
 }
 
 .car-card__price {
-  @apply flex mt-6 text-[32px] leading-[38px] font-extrabold;
+  @apply flex mt-3 text-[22px] leading-[28px] font-bold;
 }
 
 .car-card__price-dollar {
@@ -112,11 +112,11 @@
 }
 
 .car-card__image {
-  @apply relative w-full h-40 my-3 object-contain;
+  @apply relative w-full h-44 my-3 rounded-xl overflow-hidden bg-slate-100;
 }
 
 .car-card__icon-container {
-  @apply flex group-hover:invisible w-full justify-between text-grey;
+  @apply flex w-full justify-between text-grey;
 }
 
 .car-card__icon {

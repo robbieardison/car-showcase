@@ -3,6 +3,7 @@
 import { useMemo, useState } from "react";
 import { useEffect } from "react";
 import Link from "next/link";
+import Image from "next/image";
 import { CarDetails, CarListing, Hero, SearchBar, YearFilter } from "@/components";
 import { mockCars } from "@/data/mockCars";
 import { salesPeople } from "@/data/salesPeople";
@@ -16,6 +17,7 @@ export default function Home() {
   const [maxPrice, setMaxPrice] = useState(1000000000);
   const [wishlistedCarIds, setWishlistedCarIds] = useState<Set<string>>(new Set());
   const [comparedCarIds, setComparedCarIds] = useState<Set<string>>(new Set());
+  const [isCompareOpen, setIsCompareOpen] = useState(false);
 
   const formatRupiah = (amount: number) =>
     new Intl.NumberFormat("id-ID", {
@@ -41,6 +43,12 @@ export default function Home() {
       JSON.stringify(Array.from(wishlistedCarIds))
     );
   }, [wishlistedCarIds]);
+
+  useEffect(() => {
+    if (comparedCarIds.size === 0) {
+      setIsCompareOpen(false);
+    }
+  }, [comparedCarIds]);
 
   const availableYears = useMemo(
     () => Array.from(new Set(mockCars.map((car) => car.year))).sort((a, b) => b - a),
@@ -85,15 +93,14 @@ export default function Home() {
   );
 
   const toggleWishlist = (carId: string) => {
-    setWishlistedCarIds((prev) => {
-      const next = new Set(prev);
-      if (next.has(carId)) {
-        next.delete(carId);
-      } else {
-        next.add(carId);
-      }
-      return next;
-    });
+    const next = new Set(wishlistedCarIds);
+    if (next.has(carId)) {
+      next.delete(carId);
+    } else {
+      next.add(carId);
+    }
+    setWishlistedCarIds(next);
+    window.localStorage.setItem("wishlistCarIds", JSON.stringify(Array.from(next)));
   };
 
   const toggleCompare = (carId: string) => {
@@ -164,30 +171,6 @@ export default function Home() {
           />
         </div>
 
-        {comparedCars.length > 0 && (
-          <div className="mt-6 bg-white border border-gray-200 rounded-xl p-4">
-            <div className="flex items-center justify-between gap-3 flex-wrap">
-              <h3 className="text-lg font-semibold">Compare Mode ({comparedCars.length}/3)</h3>
-              <button
-                type="button"
-                onClick={() => setComparedCarIds(new Set())}
-                className="text-sm px-3 py-1 rounded-full border border-gray-300"
-              >
-                Clear Compare
-              </button>
-            </div>
-            <div className="grid md:grid-cols-3 gap-3 mt-3">
-              {comparedCars.map((car) => (
-                <div key={car.id} className="bg-primary-blue-100 rounded-lg p-3">
-                  <p className="font-semibold">{car.make} {car.model}</p>
-                  <p className="text-sm text-grey">{car.year} - {formatRupiah(car.price)}</p>
-                  <p className="text-sm text-grey">{car.fuelType} - {car.transmission}</p>
-                </div>
-              ))}
-            </div>
-          </div>
-        )}
-
         <CarListing
           cars={filteredCars}
           onViewDetails={setSelectedCar}
@@ -204,6 +187,74 @@ export default function Home() {
         onClose={() => setSelectedCar(null)}
         salesPeople={salesPeople}
       />
+
+      {comparedCars.length > 0 && (
+        <button
+          type="button"
+          onClick={() => setIsCompareOpen(true)}
+          className="fixed right-6 bottom-6 z-40 bg-primary-blue text-white px-5 py-3 rounded-full shadow-lg"
+        >
+          Buka Compare ({comparedCars.length})
+        </button>
+      )}
+
+      {isCompareOpen && (
+        <div className="fixed inset-0 z-50 bg-black/40 p-4 flex items-center justify-center">
+          <div className="w-full max-w-5xl bg-white rounded-2xl shadow-xl p-5 max-h-[90vh] overflow-y-auto">
+            <div className="flex items-center justify-between flex-wrap gap-3">
+              <div>
+                <h3 className="text-2xl font-bold">Compare Mobil</h3>
+                <p className="text-sm text-grey">
+                  Biar gampang lihat beda harga, tahun, dan spesifikasi.
+                </p>
+              </div>
+              <div className="flex items-center gap-2">
+                <button
+                  type="button"
+                  onClick={() => setComparedCarIds(new Set())}
+                  className="text-sm px-3 py-2 rounded-full border border-gray-300"
+                >
+                  Clear
+                </button>
+                <button
+                  type="button"
+                  onClick={() => setIsCompareOpen(false)}
+                  className="text-sm px-3 py-2 rounded-full bg-primary-blue text-white"
+                >
+                  Tutup
+                </button>
+              </div>
+            </div>
+
+            <div className="grid md:grid-cols-3 gap-4 mt-5">
+              {comparedCars.map((car) => (
+                <div key={car.id} className="border border-slate-200 rounded-xl p-3 bg-slate-50">
+                  <div className="relative h-36 w-full overflow-hidden rounded-lg bg-white">
+                    <Image src={car.image} alt={`${car.make} ${car.model}`} fill className="object-cover" />
+                  </div>
+                  <div className="mt-3">
+                    <p className="font-semibold text-lg">{car.make} {car.model}</p>
+                    <p className="text-sm text-grey">{car.year}</p>
+                  </div>
+                  <div className="mt-3 space-y-1">
+                    <p className="text-sm"><span className="text-grey">Harga:</span> {formatRupiah(car.price)}</p>
+                    <p className="text-sm"><span className="text-grey">Fuel:</span> {car.fuelType}</p>
+                    <p className="text-sm"><span className="text-grey">Transmisi:</span> {car.transmission}</p>
+                    <p className="text-sm"><span className="text-grey">Seats:</span> {car.seats}</p>
+                  </div>
+                  <button
+                    type="button"
+                    onClick={() => toggleCompare(car.id)}
+                    className="mt-3 text-sm px-3 py-1.5 rounded-full border border-gray-300"
+                  >
+                    Remove
+                  </button>
+                </div>
+              ))}
+            </div>
+          </div>
+        </div>
+      )}
     </main>
   );
 }

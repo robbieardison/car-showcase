@@ -73,16 +73,16 @@ const CarCard = ({
                 <span className="car-card__price-day text-base">{formattedPrice}</span>
             </p>
 
-            <div className="relative w-full h-40 my-3">
+            <div className="car-card__image">
                 <Image
                     src={car.image}
                     alt={`${car.make} ${car.model}`}
                     fill
-                    className="object-contain"
+                    className="object-cover"
                 />
             </div>
 
-            <div className="relative w-full mt-2">
+            <div className="w-full mt-2">
                 {showCompareControl && (
                     <div className="flex gap-2 mb-3">
                         <button
@@ -117,11 +117,20 @@ const CarCard = ({
                     </div>
                 </div>
 
-                <div className="car-card__btn-container">
+                <div className="mt-4 w-full md:hidden">
                     <CustomButton
                         title="View Details"
                         btnType="button"
-                        containerStyles="w-full py-[16px] rounded-full bg-primary-blue text-white"
+                        containerStyles="w-full py-2 rounded-xl bg-primary-blue text-white text-sm"
+                        handleClick={() => onViewDetails(car)}
+                    />
+                </div>
+
+                <div className="hidden w-full md:group-hover:block md:mt-4">
+                    <CustomButton
+                        title="View Details"
+                        btnType="button"
+                        containerStyles="w-full py-2 rounded-xl bg-primary-blue text-white text-sm"
                         handleClick={() => onViewDetails(car)}
                     />
                 </div>

@@ -12,10 +12,10 @@ const Hero = () => {
     <div className='hero'>
       <div className='flex-1 pt-36 padding-x'>
         <h1 className='hero__title'>
-          Temukan mobil impian Anda untuk dibeli dengan mudah.
+          Cari mobil yang pas, tanpa drama.
         </h1>
         <p className='hero__subtitle'>
-        Jelajahi katalog mobil terbaru, bandingkan pilihan, dan hubungi sales dalam satu tempat.
+        Tinggal filter sesuai budget, bandingin opsinya, lalu chat sales yang ready bantu.
         </p>
         <CustomButton 
         title="Explore Cars"

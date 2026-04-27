@@ -33,12 +33,12 @@ const CarDetails = ({ car, isOpen, onClose, salesPeople }: CarDetailsProps) => {
                     <Image src="/close.svg" alt="close" width={20} height={20} />
                 </button>
 
-                <div className="car-details__main-image">
+                <div className="car-details__main-image bg-slate-100 overflow-hidden h-56">
                     <Image
                         src={car.image}
                         alt={`${car.make} ${car.model}`}
                         fill
-                        className="object-contain"
+                        className="object-cover"
                     />
                 </div>
 
@@ -59,7 +59,7 @@ const CarDetails = ({ car, isOpen, onClose, salesPeople }: CarDetailsProps) => {
                         <p className="font-semibold">{formattedPrice}</p>
                     </div>
                     <div className="bg-primary-blue-100 rounded-lg p-3">
-                        <p className="text-sm text-grey">Fuel Type</p>
+                        <p className="text-sm text-grey">Bahan Bakar</p>
                         <p className="font-semibold">{car.fuelType}</p>
                     </div>
                     <div className="bg-primary-blue-100 rounded-lg p-3">

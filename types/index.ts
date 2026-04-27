@@ -13,7 +13,7 @@ export interface Car {
     model: string;
     year: number;
     price: number;
-    fuelType: "Petrol" | "Diesel" | "Hybrid" | "Electric";
+    fuelType: "Bensin" | "Solar" | "Hybrid" | "Listrik";
     transmission: "Automatic" | "Manual";
     seats: number;
     image: string;
