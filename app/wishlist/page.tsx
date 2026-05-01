@@ -9,25 +9,29 @@ import { Car } from "@/types";
 
 export default function WishlistPage() {
   const [wishlistedCarIds, setWishlistedCarIds] = useState<Set<string>>(new Set());
+  const [wishlistHydrated, setWishlistHydrated] = useState(false);
   const [selectedCar, setSelectedCar] = useState<Car | null>(null);
 
   useEffect(() => {
     const storedWishlist = window.localStorage.getItem("wishlistCarIds");
-    if (!storedWishlist) return;
-    try {
-      const parsedIds = JSON.parse(storedWishlist) as string[];
-      setWishlistedCarIds(new Set(parsedIds));
-    } catch {
-      setWishlistedCarIds(new Set());
+    if (storedWishlist) {
+      try {
+        const parsedIds = JSON.parse(storedWishlist) as string[];
+        setWishlistedCarIds(new Set(parsedIds));
+      } catch {
+        setWishlistedCarIds(new Set());
+      }
     }
+    setWishlistHydrated(true);
   }, []);
 
   useEffect(() => {
+    if (!wishlistHydrated) return;
     window.localStorage.setItem(
       "wishlistCarIds",
       JSON.stringify(Array.from(wishlistedCarIds))
     );
-  }, [wishlistedCarIds]);
+  }, [wishlistedCarIds, wishlistHydrated]);
 
   const wishlistCars = useMemo(
     () => mockCars.filter((car) => wishlistedCarIds.has(car.id)),

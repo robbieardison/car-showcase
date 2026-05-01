@@ -16,6 +16,7 @@ export default function Home() {
   const [sortBy, setSortBy] = useState("recommended");
   const [maxPrice, setMaxPrice] = useState(1000000000);
   const [wishlistedCarIds, setWishlistedCarIds] = useState<Set<string>>(new Set());
+  const [wishlistHydrated, setWishlistHydrated] = useState(false);
   const [comparedCarIds, setComparedCarIds] = useState<Set<string>>(new Set());
   const [isCompareOpen, setIsCompareOpen] = useState(false);
 
@@ -28,21 +29,24 @@ export default function Home() {
 
   useEffect(() => {
     const storedWishlist = window.localStorage.getItem("wishlistCarIds");
-    if (!storedWishlist) return;
-    try {
-      const parsedIds = JSON.parse(storedWishlist) as string[];
-      setWishlistedCarIds(new Set(parsedIds));
-    } catch {
-      setWishlistedCarIds(new Set());
+    if (storedWishlist) {
+      try {
+        const parsedIds = JSON.parse(storedWishlist) as string[];
+        setWishlistedCarIds(new Set(parsedIds));
+      } catch {
+        setWishlistedCarIds(new Set());
+      }
     }
+    setWishlistHydrated(true);
   }, []);
 
   useEffect(() => {
+    if (!wishlistHydrated) return;
     window.localStorage.setItem(
       "wishlistCarIds",
       JSON.stringify(Array.from(wishlistedCarIds))
     );
-  }, [wishlistedCarIds]);
+  }, [wishlistedCarIds, wishlistHydrated]);
 
   useEffect(() => {
     if (comparedCarIds.size === 0) {

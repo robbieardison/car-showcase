@@ -23,7 +23,7 @@ const CarDetails = ({ car, isOpen, onClose, salesPeople }: CarDetailsProps) => {
 
     return (
         <div className="fixed inset-0 z-50 bg-black/40 flex items-center justify-center p-4">
-            <div className="car-details__dialog-panel">
+            <div className="car-details__dialog-panel" key={car.id}>
                 <button
                     type="button"
                     onClick={onClose}
@@ -37,8 +37,10 @@ const CarDetails = ({ car, isOpen, onClose, salesPeople }: CarDetailsProps) => {
                     <Image
                         src={car.image}
                         alt={`${car.make} ${car.model}`}
-                        fill
-                        className="object-cover"
+                        width={1200}
+                        height={700}
+                        unoptimized
+                        className="h-full w-full object-cover"
                     />
                 </div>
 
